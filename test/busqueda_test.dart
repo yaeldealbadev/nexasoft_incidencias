@@ -1,6 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nexasoft_incidencias/model/incidencia.dart';
 import 'package:nexasoft_incidencias/services/gestor_incidencias.dart';
+import 'package:shared_preferences_platform_interface/in_memory_shared_preferences_async.dart';
+import 'package:shared_preferences_platform_interface/shared_preferences_async_platform_interface.dart';
 
 Incidencia _caso(String id, String titulo, String descripcion) => Incidencia(
       id: id,
@@ -13,11 +15,17 @@ Incidencia _caso(String id, String titulo, String descripcion) => Incidencia(
     );
 
 void main() {
-  final gestor = GestorIncidencias()
-    ..incidencias = [
-      _caso('1', 'WiFi intermitente en recepción', 'Se corta cada hora'),
-      _caso('2', 'Impresora sin tinta', 'Requiere cartucho nuevo'),
-    ];
+  late GestorIncidencias gestor;
+
+  setUp(() {
+    SharedPreferencesAsyncPlatform.instance =
+        InMemorySharedPreferencesAsync.empty();
+    gestor = GestorIncidencias()
+      ..incidencias = [
+        _caso('1', 'WiFi intermitente en recepción', 'Se corta cada hora'),
+        _caso('2', 'Impresora sin tinta', 'Requiere cartucho nuevo'),
+      ];
+  });
 
   test('BUG-002: la búsqueda ignora mayúsculas y minúsculas', () {
     final r = gestor.buscar('wifi');
