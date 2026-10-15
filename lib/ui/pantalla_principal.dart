@@ -187,9 +187,14 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
                                             children: [
                                               Text('${item.id}  ·  ${item.cliente}'),
                                               const SizedBox(height: 6),
-                                              Text(item.estado, style: TextStyle(
-                                                color: colorEstado(item.estado), fontWeight: FontWeight.bold,
-                                              )),
+                                              Row(children: [
+                                                Text(item.estado, style: TextStyle(
+                                                  color: colorEstado(item.estado), fontWeight: FontWeight.bold,
+                                                )),
+                                                const SizedBox(width: 12),
+                                                Text('Prioridad: ${item.prioridad}',
+                                                    style: const TextStyle(color: Colors.black54)),
+                                              ]),
                                             ],
                                           ),
                                         ),
