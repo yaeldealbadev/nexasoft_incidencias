@@ -1,6 +1,10 @@
 import '../data/almacen_local.dart';
 import '../model/incidencia.dart';
 
+const filtroTodosEstados = 'Todos';
+const filtroTodasPrioridades = 'Todas';
+const estadosValidos = ['Pendiente', 'En proceso', 'Resuelta'];
+
 class GestorIncidencias {
   final AlmacenLocal datos = AlmacenLocal();
   List<Incidencia> incidencias = [];
@@ -16,6 +20,19 @@ class GestorIncidencias {
         .where((x) =>
             x.titulo.toLowerCase().contains(termino) ||
             x.descripcion.toLowerCase().contains(termino))
+        .toList();
+  }
+
+  /// Aplica juntas todas las condiciones activas: texto, estado y prioridad.
+  List<Incidencia> filtrar({
+    String texto = '',
+    String estado = filtroTodosEstados,
+    String prioridad = filtroTodasPrioridades,
+  }) {
+    return buscar(texto)
+        .where((x) =>
+            (estado == filtroTodosEstados || x.estado == estado) &&
+            (prioridad == filtroTodasPrioridades || x.prioridad == prioridad))
         .toList();
   }
 
